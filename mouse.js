@@ -23,7 +23,7 @@ function mouseclick (ev) {                        
     
     if (schermata == 1) {                           
         fire = 1;                           
-        //playSound(firesound);       
+        playSound(firesound);       
                                                       
         //controllo se ho colpito un meteorite                           
         for (var n = 0; n < nattivi; n ++) {                                         

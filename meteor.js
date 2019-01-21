@@ -41,7 +41,7 @@ function drawMet(){  
         alt *= 3;
         buffer_context.drawImage(esplosione, sx, 0,120,120, -(larg / 2), -(alt / 2), alt, larg);
     } 
-    
+
     buffer_context.restore(); 
 } 
 

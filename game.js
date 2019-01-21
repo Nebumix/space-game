@@ -50,12 +50,24 @@ var fire = 0;
 var punti = new Array(); 
 var datap = new Array(); 
 
+//var ritardo = 30; 
+var pausa = false; 
+
+//audio
+var firesound = new Audio("audio/laser1.mp3");
+firesound.volume = 0.3; 
+
+var crash = new Audio("audio/explosion.mp3");     
+
+var m1 = new Audio("audio/m1.mp3"); 
+m1.loop = true;
 
 generaStelle()
 resetMeteoriti(); 
 ordinaMeteoriti();
 
 function draw(){
+
 
     // scorrimento sfondo 
     //2.2 e 3.6 sono il rapporto tra altezza e larghezza del canvas e dell'immagine
@@ -129,6 +141,14 @@ function draw(){
         buffer_context.fillText('Premi R per ricominciare', 200, 400); 
     }   
 
+    
+
+    if (pausa) {             
+        buffer_context.fillStyle ="#fff";             
+        buffer_context.font = "16px Arial";             
+        buffer_context.fillText('Gioco in Pausa', 300 - shiftx, 400 - shifty); 
+    } 
+
 
     contesto.drawImage(buffer, 0, 0); 
 
@@ -136,61 +156,69 @@ function draw(){
 }
 
 function aggiornaLogica(){
-    // // Imposto una durata di 10 frame per la visualizzazione del fuoco 
-    if (fire > 0) 
-        fire ++; 
 
-    if (fire > 10) 
-        fire = 0; 
+    if(!pausa){
+
+        // // Imposto una durata di 10 frame per la visualizzazione del fuoco 
+        if (fire > 0) 
+            fire ++; 
+
+        if (fire > 10) 
+            fire = 0; 
 
 
-    // aggiorno dati e posizioni degli oggetti nella scena 
-    // centrox = (canvas1.width / 2) - (posx - (canvas1.width / 2) ) / 2.2;
-    // centroy = (canvas1.height / 2) - (posy - (canvas1.height / 2) ) / 3.6;
-    
-    for (var n = 0; n < nstelle; n++) {
+        // aggiorno dati e posizioni degli oggetti nella scena 
+        // centrox = (canvas1.width / 2) - (posx - (canvas1.width / 2) ) / 2.2;
+        // centroy = (canvas1.height / 2) - (posy - (canvas1.height / 2) ) / 3.6;
+        
+        for (var n = 0; n < nstelle; n++) {
 
-        stelle[n].dist -= stelle[n].speed;
-        //console.log(stelle[n].dist);                  
+            stelle[n].dist -= stelle[n].speed;
+            //console.log(stelle[n].dist);                  
 
-        //if (stelle[n].dist <= 700) {
-        if (stelle[n].dist <= -300) {
-            stelle[n].dist = 0;
-            stelle[n].speed = (Math.random() * 2) + 1;
-            stelle[n].x = (Math.floor(Math.random() * 700) - 350) / 10;
-            stelle[n].y = (Math.floor(Math.random() * 600) - 300) / 10;
+            //if (stelle[n].dist <= 700) {
+            if (stelle[n].dist <= -300) {
+                stelle[n].dist = 0;
+                stelle[n].speed = (Math.random() * 2) + 1;
+                stelle[n].x = (Math.floor(Math.random() * 700) - 350) / 10;
+                stelle[n].y = (Math.floor(Math.random() * 600) - 300) / 10;
+            }
+
         }
 
-    }
+        //meteoriti
+        if (schermata == 1) {         
 
-    //meteoriti
-    if (schermata == 1) {         
+            for (var n = 0; n < nattivi; n ++) {                         
+                meteoriti[n].dist -= (meteoriti[n].speed + 4) / 6;                           
+                meteoriti[n].angle += meteoriti[n].speed;                           
+                if (meteoriti[n].stato > 0) {
+                    meteoriti[n].stato ++;   
+                    //playSound(crash);         
+                }
+                                
+                //se vengo colpito
+                if ((meteoriti[n]. dist < 605) && (meteoriti[n].stato == 0)) {                                       
+                    playSound(crash);                                         
+                    meteoriti[n].stato++;                                         
+                    salvaPunteggio();
+                    schermata = 2;                           
+                }                           
+                    
+                if ((meteoriti[n].dist < 500) || (meteoriti[n].stato > 12)) {                                         
+                    meteoriti[n].dist = 1000;                                         
+                    meteoriti[n].speed = (Math.random() * 6) - 3;                             
+                    meteoriti[n].x = (Math.floor(Math.random() * 700) - 350) / 8;                                         
+                    meteoriti[n].y = (Math.floor(Math.random() * 600) - 300) / 20;                                         
+                    meteoriti[n].stato = 0;                                         
+                    meteoriti[n].angle = (Math.random() * 360);                                 
+                    ordinaMeteoriti();                           
+                }             
+            } 
 
-        for (var n = 0; n < nattivi; n ++) {                         
-            meteoriti[n].dist -= (meteoriti[n].speed + 4) / 6;                           
-            meteoriti[n].angle += meteoriti[n].speed;                           
-            if (meteoriti[n].stato > 0) meteoriti[n].stato ++;           
-                            
-            //se vengo colpito
-            if ((meteoriti[n]. dist < 605) && (meteoriti[n].stato == 0)) {                                       
-                //playSound(crash);                                         
-                meteoriti[n].stato++;                                         
-                salvaPunteggio();
-                schermata = 2;                           
-            }                           
-                
-            if ((meteoriti[n].dist < 500) || (meteoriti[n].stato > 12)) {                                         
-                meteoriti[n].dist = 1000;                                         
-                meteoriti[n].speed = (Math.random() * 6) - 3;                             
-                meteoriti[n].x = (Math.floor(Math.random() * 700) - 350) / 8;                                         
-                meteoriti[n].y = (Math.floor(Math.random() * 600) - 300) / 20;                                         
-                meteoriti[n].stato = 0;                                         
-                meteoriti[n].angle = (Math.random() * 360);                                 
-                ordinaMeteoriti();                           
-            }             
-        } 
-
-    }     
+        }   
+        
+    }  
 }
 
 function gameLoop() {
@@ -200,6 +228,18 @@ function gameLoop() {
 }
 
 function init(){
+    playSound(m1); 
+
+    window.addEventListener('keydown', doKeyDown, false); 
+    // window.addEventListener('keyup', 
+    //     function(event) { 
+    //         Key.onKeyup(event); 
+    //     }, false); 
+        
+    // window.addEventListener('keydown', function(event) { 
+    //     Key.onKeydown(event); }, false); 
+
+
     canvas.addEventListener('mousemove', mousemove, false); 
     canvas.addEventListener('click', mouseclick, false); 
 
