@@ -16,6 +16,9 @@ spazio.src = "img/spazio2.jpg";
 var met1 = new Image();     
 met1.src = "img/meteor.png"; 
 
+var mirino = new Image();     
+mirino.src = "img/mirino1.png"; 
+
 //stelle
 var stelle = new Array(); 
 var nstelle = 200; 
@@ -62,8 +65,8 @@ function draw(){
         for (var n = 0; n < nattivi; n++) 
         meteoriti[n].draw();  
 
-        // disegno il mirino
-        //buffer_context.drawImage(mirino, posx - 30, posy - 30); 
+        //disegno il mirino
+        buffer_context.drawImage(mirino, posx - (mirino.width/2), posy - (mirino.height + 10)); 
     //}       
 
     contesto.drawImage(buffer, 0, 0); 
