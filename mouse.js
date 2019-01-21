@@ -32,7 +32,7 @@ function mouseclick (ev) {                        
                     if (meteoriti[n].stato == 0)                                                                           
                         meteoriti[n].stato ++;                                                     
                         
-                    //incrementa_punteggio();                                                     
+                        incrementa_punteggio();                                                                                                         
                 }                                         
             }                           
         }             

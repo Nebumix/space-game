@@ -39,6 +39,7 @@ var posx = canvas1.width/2, posy = canvas1.height/2;
     //coordinate del centro del canvas
 var centrox = canvas1.width / 2, centroy = canvas1.height / 2; 
 
+var punteggio = 0; 
 var livello = 1; 
 var schermata = 0;       
 
@@ -46,11 +47,13 @@ var TO_RADIANS = Math.PI/180;
     
 var fire = 0; 
 
+var punti = new Array(); 
+var datap = new Array(); 
+
 
 generaStelle()
 resetMeteoriti(); 
 ordinaMeteoriti();
-
 
 function draw(){
 
@@ -93,11 +96,17 @@ function draw(){
         buffer_context.font = "16px Arial Black";     
         buffer_context.fillText('CLICCA CON IL MOUSE PER COMINCIARE', 165 - shiftx, 400 - shifty);          
                                      
-        // scrivo i punteggi             
-        // for (var n = 0; n < 5; n ++) {             
-        //     buffer_context.font = "11px Arial";             
-        //     buffer_context.fillText(datap[n] + ": "+ punti[n], 300 - shiftx, 500 - shifty + (15 * n));             
-        // } 
+        // scrivo i punteggi    
+        caricaPunteggi(); 
+
+        buffer_context.fillStyle ="#fff";             
+        buffer_context.font = "12px Arial Black"; 
+        buffer_context.fillText('PUNTEGGI MIGLIORI', 300 - shiftx, 460 - shifty + 15);          
+         
+        for (var n = 0; n < 5; n ++) {             
+            buffer_context.font = "11px Arial";             
+            buffer_context.fillText(datap[n] + " : "+ punti[n], 300 - shiftx, 500 - shifty + (15 * n));             
+        } 
     } 
     
     if (schermata == 1) {
@@ -114,7 +123,6 @@ function draw(){
         buffer_context.rect(180, 320, 340, 120);    
         buffer_context.stroke();     
        
-
         buffer_context.fillStyle ="#fff";             
         buffer_context.font = "22px Arial Black";             
         buffer_context.fillText('Fine partita. Punti: '+ punteggio, 200,380);             
@@ -167,7 +175,7 @@ function aggiornaLogica(){
             if ((meteoriti[n]. dist < 605) && (meteoriti[n].stato == 0)) {                                       
                 //playSound(crash);                                         
                 meteoriti[n].stato++;                                         
-                //salvaPunteggio();
+                salvaPunteggio();
                 schermata = 2;                           
             }                           
                 
