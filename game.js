@@ -38,6 +38,8 @@ var schermata = 0;      
 
 var TO_RADIANS = Math.PI/180;
     
+var fire = 0; 
+
 
 generaStelle()
 resetMeteoriti(); 
@@ -68,6 +70,10 @@ function draw(){
         //disegno il mirino
         buffer_context.drawImage(mirino, posx - (mirino.width/2), posy - (mirino.height + 10)); 
     //}       
+
+    //if (fire > 0) 
+    drawFire(); 
+
 
     contesto.drawImage(buffer, 0, 0); 
 
