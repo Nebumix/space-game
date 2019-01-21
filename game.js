@@ -24,7 +24,7 @@ var stelle = new Array();
 var nstelle = 200; 
 
 //meteoriti
-var nmeteoriti = 100, nattivi = 5, ndistrutti = 0; 
+var nmeteoriti = 100, nattivi = 0, ndistrutti = 0; 
 var meteoriti = new Array(); 
 
 // variabili globali 
@@ -62,17 +62,17 @@ function draw(){
         stelle[n].draw();
 
     // disegno i meteoriti 
-    //if (schermata == 1) {
+    if (schermata == 1) {
         ordinaMeteoriti();
         for (var n = 0; n < nattivi; n++) 
         meteoriti[n].draw();  
 
         //disegno il mirino
         buffer_context.drawImage(mirino, posx - (mirino.width/2), posy - (mirino.height + 10)); 
-    //}       
+    }       
 
-    //if (fire > 0) 
-    drawFire(); 
+    if (fire > 0) 
+        drawFire(); 
 
 
     contesto.drawImage(buffer, 0, 0); 
@@ -81,6 +81,14 @@ function draw(){
 }
 
 function aggiornaLogica(){
+    // // Imposto una durata di 10 frame per la visualizzazione del fuoco 
+    if (fire > 0) 
+        fire ++; 
+
+    if (fire > 10) 
+        fire = 0; 
+
+
     // aggiorno dati e posizioni degli oggetti nella scena 
     // centrox = (canvas1.width / 2) - (posx - (canvas1.width / 2) ) / 2.2;
     // centroy = (canvas1.height / 2) - (posy - (canvas1.height / 2) ) / 3.6;
@@ -100,13 +108,15 @@ function aggiornaLogica(){
 
     }
 
-    //if (schermata == 1) {         
+    //meteoriti
+    if (schermata == 1) {         
 
         for (var n = 0; n < nattivi; n ++) {                         
             meteoriti[n].dist -= (meteoriti[n].speed + 4) / 6;                           
             meteoriti[n].angle += meteoriti[n].speed;                           
             if (meteoriti[n].stato > 0) meteoriti[n].stato ++;           
                             
+            //se vengo colpito
             if ((meteoriti[n]. dist < 605) && (meteoriti[n].stato == 0)) {                                       
                 //playSound(crash);                                         
                 meteoriti[n].stato++;                                         
@@ -125,7 +135,7 @@ function aggiornaLogica(){
             }             
         } 
 
-    //}     
+    }     
 }
 
 function gameLoop() {
@@ -136,12 +146,7 @@ function gameLoop() {
 
 function init(){
     canvas.addEventListener('mousemove', mousemove, false); 
+    canvas.addEventListener('click', mouseclick, false); 
 
     gameLoop();
 }
-
-//salva le coordinate del mouse
-function mousemove (ev) {                                   
-        posx = ev.layerX;                         
-        posy = ev.layerY;             
-} 

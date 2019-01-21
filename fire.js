@@ -9,8 +9,8 @@ function drawFire() {            
     buffer_context.lineCap = "round";             
     buffer_context.strokeStyle = "#FFF";           
     buffer_context.moveTo(0, canvas.height);           
-    buffer_context.lineTo(posx - 5, posy + 5);             
+    buffer_context.lineTo(posx, posy - 25);             
     buffer_context.moveTo(canvas.width, canvas.height);           
-    buffer_context.lineTo(posx + 5, posy + 5);             
+    buffer_context.lineTo(posx, posy - 25);             
     buffer_context.stroke(); 
 } 
