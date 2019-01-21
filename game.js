@@ -11,11 +11,18 @@ var buffer_context = buffer.getContext('2d');
 
 //sfondo
 var spazio = new Image();     
-spazio.src = "img/spazio1.jpg"; 
+spazio.src = "img/spazio2.jpg"; 
+
+var met1 = new Image();     
+met1.src = "img/meteor.png"; 
 
 //stelle
 var stelle = new Array(); 
 var nstelle = 200; 
+
+//meteoriti
+var nmeteoriti = 100, nattivi = 5, ndistrutti = 0; 
+var meteoriti = new Array(); 
 
 // variabili globali 
     //posizione di partenza posizionata al centro del canvas
@@ -23,53 +30,18 @@ var posx = canvas1.width/2, posy = canvas1.height/2;
     //coordinate del centro del canvas
 var centrox = canvas1.width / 2, centroy = canvas1.height / 2; 
 
+var livello = 1; 
+var schermata = 0;       
+
+var TO_RADIANS = Math.PI/180;
+    
+
 generaStelle()
+resetMeteoriti(); 
+ordinaMeteoriti();
 
-function star(x, y, dist, speed) {
-    this.x = x;
-    this.y = y;
-    this.dist = dist;
-    this.draw = drawStar;
-    this.speed = speed; 
-}
 
-function drawStar(){
 
-    buffer_context.fillStyle = "#FFF";             
-    //var x1 = this.x * ((1000 - this.dist) / 10); 
-    var x1 = this.x * (this.dist / 10); 
-    // console.log(this.x);
-    // console.log("x = " + x1);            
-    var y1 = this.y * (this.dist / 10);  
-    //var y1 = this.y * ((1000 - this.dist) / 10); 
-    //console.log("y = " + y1);                       
-    buffer_context.fillRect(centrox + x1, centroy + y1, 2, 2); 
-
-} 
-
-function generaStelle() { 
-    for (var n = 0; n < nstelle; n ++) {
-
-        // la velocità va da 1 a 2
-        // per math.random si fa  * max - min ) + min
-        var speed = (Math.random() * 2) + 1;             
-        // la distanza va da 700 a 1000             
-        //var dist = (Math.random() * 300) + 700;    
-        //faccio una prova prendendo da 0 a 300   
-        var dist = 0;       
-
-        //fingiamo di avere degli assi con l'origine al centro della figura
-        //questi valori saranno poi sommati (+-) alle coordinate del centro del canvas      
-        // la x va da -350 a 350
-        var x = (Math.floor(Math.random() * 700) - 350) / 10;      
-        //var x = (Math.floor(Math.random() * canvas1.width));  
-        // la y va da -300 a 300             
-        var y = (Math.floor(Math.random() * 600) - 300) / 10;     
-        //var y = (Math.floor(Math.random() * canvas1.height));     
-
-        stelle[n] = new star(x, y, dist, speed); 
-    } 
-} 
 
 function draw(){
 
@@ -81,8 +53,18 @@ function draw(){
     buffer_context.drawImage(spazio, -162 - shiftx, -84 - shifty); 
 
     // disegno le stelle 
-    for (var n = 0; n < nstelle; n ++) 
+    for (var n = 0; n < nstelle; n++) 
         stelle[n].draw();
+
+    // disegno i meteoriti 
+    //if (schermata == 1) {
+        ordinaMeteoriti();
+        for (var n = 0; n < nattivi; n++) 
+        meteoriti[n].draw();  
+
+        // disegno il mirino
+        //buffer_context.drawImage(mirino, posx - 30, posy - 30); 
+    //}       
 
     contesto.drawImage(buffer, 0, 0); 
 
@@ -108,6 +90,33 @@ function aggiornaLogica(){
         }
 
     }
+
+    //if (schermata == 1) {         
+
+        for (var n = 0; n < nattivi; n ++) {                         
+            meteoriti[n].dist -= (meteoriti[n].speed + 4) / 6;                           
+            meteoriti[n].angle += meteoriti[n].speed;                           
+            if (meteoriti[n].stato > 0) meteoriti[n].stato ++;           
+                            
+            if ((meteoriti[n]. dist < 605) && (meteoriti[n].stato == 0)) {                                       
+                //playSound(crash);                                         
+                meteoriti[n].stato++;                                         
+                //salvaPunteggio();
+                schermata = 2;                           
+            }                           
+                
+            if ((meteoriti[n].dist < 500) || (meteoriti[n].stato > 12)) {                                         
+                meteoriti[n].dist = 1000;                                         
+                meteoriti[n].speed = (Math.random() * 6) - 3;                             
+                meteoriti[n].x = (Math.floor(Math.random() * 700) - 350) / 8;                                         
+                meteoriti[n].y = (Math.floor(Math.random() * 600) - 300) / 20;                                         
+                meteoriti[n].stato = 0;                                         
+                meteoriti[n].angle = (Math.random() * 360);                                 
+                ordinaMeteoriti();                           
+            }             
+        } 
+
+    //}     
 }
 
 function gameLoop() {
