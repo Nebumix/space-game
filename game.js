@@ -78,11 +78,49 @@ function draw(){
     if (fire > 0) 
         drawFire(); 
 
-        // scorrimento cockpit e scritte 
-        shiftx = (posx - 350) / 14; 
-        shifty = (posy - 300) / 30;             
-        // disegno il cockpit 
-        buffer_context.drawImage(cockpit, -50 - shiftx, -20 - shifty , 800, 700); 
+    // scorrimento cockpit e scritte 
+    shiftx = (posx - 350) / 14; 
+    shifty = (posy - 300) / 30;             
+    // disegno il cockpit 
+    buffer_context.drawImage(cockpit, -50 - shiftx, -20 - shifty , 800, 700); 
+
+    if (schermata == 0) {             
+        // premi il tasto del mouse per iniziare     
+        buffer_context.fillStyle ="#434343";             
+        buffer_context.fillRect(150 - shiftx, 380 - shifty, 395, 30);         
+                
+        buffer_context.fillStyle ="#fff";             
+        buffer_context.font = "16px Arial Black";     
+        buffer_context.fillText('CLICCA CON IL MOUSE PER COMINCIARE', 165 - shiftx, 400 - shifty);          
+                                     
+        // scrivo i punteggi             
+        // for (var n = 0; n < 5; n ++) {             
+        //     buffer_context.font = "11px Arial";             
+        //     buffer_context.fillText(datap[n] + ": "+ punti[n], 300 - shiftx, 500 - shifty + (15 * n));             
+        // } 
+    } 
+    
+    if (schermata == 1) {
+        buffer_context.fillStyle ="#BBF";             
+        buffer_context.font = "16px Arial Black";             
+        buffer_context.fillText('PUNTI: '+ punteggio, 300 - shiftx, 500 - shifty);             
+        buffer_context.fillText('LIVELLO: '+ livello, 300 - shiftx, 520 - shifty); 
+    } 
+    
+    if (schermata == 2) {             
+        buffer_context.fillStyle ="#434343";             
+        buffer_context.fillRect(190, 340, 320, 80);  
+        buffer_context.strokeStyle = "#434343";           
+        buffer_context.rect(180, 320, 340, 120);    
+        buffer_context.stroke();     
+       
+
+        buffer_context.fillStyle ="#fff";             
+        buffer_context.font = "22px Arial Black";             
+        buffer_context.fillText('Fine partita. Punti: '+ punteggio, 200,380);             
+        buffer_context.fillText('Premi R per ricominciare', 200, 400); 
+    }   
+
 
     contesto.drawImage(buffer, 0, 0); 
 

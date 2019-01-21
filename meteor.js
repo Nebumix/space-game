@@ -51,8 +51,8 @@ function ordinaMeteoriti() {
     var ordinati = false;
     var bufm = new meteorite(0,0,0,0);
 
-    while (true) {
-        ordinati = true;
+    // while (true) {
+    //     ordinati = true;
         for (var n = 0; n < (nattivi - 1); n++) {
             if (meteoriti[n].dist < meteoriti[n+1].dist) {
                 bufm = meteoriti[n+1];
@@ -63,8 +63,8 @@ function ordinaMeteoriti() {
             }
         }
 
-        if (ordinati == true) break;
-    }
+    //     if (ordinati == true) break;
+    // }
 
 } 
 
