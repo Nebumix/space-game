@@ -19,15 +19,8 @@ function drawMet(){  
     var x1 = this.x * ((1000 - this.dist) / 60);
     var y1 = this.y * ((1000 - this.dist) / 60);
 
-    //ctx.save(); 
-    // ctx.translate(birdX, birdY); 
-    // ctx.rotate( angle * TO_RADIANS );
-    //ctx.drawImage(bird, bird_costume, 0, 38, 28, -(bird.width/4), -(bird.height/2), 38, 28);
-    //ctx.restore(); 
     buffer_context.save();
 
-    //var ang =- (Math.PI / 180) * this.angle;
-    //buffer_context.transform(Math.cos(ang), -Math.sin(ang), Math.sin(ang), Math.cos(ang), centrox + x1, centroy + y1);
     buffer_context.translate(centrox + x1, centroy + y1); 
     buffer_context.rotate( this.angle * TO_RADIANS );
 
@@ -42,12 +35,12 @@ function drawMet(){  
 
     if(this.stato == 0) {
         buffer_context.drawImage(met1, -(larg / 2), -(alt / 2), alt, larg);
-    } /*else { 
+    } else { 
         var sx = (this.stato - 1) * 120;
         larg *= 3;
         alt *= 3;
         buffer_context.drawImage(esplosione, sx, 0,120,120, -(larg / 2), -(alt / 2), alt, larg);
-    }    */
+    } 
     
     buffer_context.restore(); 
 } 

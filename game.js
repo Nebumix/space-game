@@ -19,6 +19,12 @@ met1.src = "img/meteor.png";
 var mirino = new Image();     
 mirino.src = "img/mirino1.png"; 
 
+var esplosione = new Image();     
+esplosione.src = "img/esplosione.png"; 
+
+var cockpit = new Image();     
+cockpit.src = "img/cockpit1.png"; 
+
 //stelle
 var stelle = new Array(); 
 var nstelle = 200; 
@@ -46,8 +52,6 @@ resetMeteoriti();
 ordinaMeteoriti();
 
 
-
-
 function draw(){
 
     // scorrimento sfondo 
@@ -68,12 +72,17 @@ function draw(){
         meteoriti[n].draw();  
 
         //disegno il mirino
-        buffer_context.drawImage(mirino, posx - (mirino.width/2), posy - (mirino.height + 10)); 
+        buffer_context.drawImage(mirino, posx - (mirino.width/2), posy - (mirino.height/2)); 
     }       
 
     if (fire > 0) 
         drawFire(); 
 
+        // scorrimento cockpit e scritte 
+        shiftx = (posx - 350) / 14; 
+        shifty = (posy - 300) / 30;             
+        // disegno il cockpit 
+        buffer_context.drawImage(cockpit, -50 - shiftx, -20 - shifty , 800, 700); 
 
     contesto.drawImage(buffer, 0, 0); 
 

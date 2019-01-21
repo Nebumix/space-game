@@ -25,16 +25,16 @@ function mouseclick (ev) {                        
         fire = 1;                           
         //playSound(firesound);       
                                                       
-        // controllo se ho colpito un meteorite                           
-        // for (var n = 0; n < nattivi; n ++) {                                         
-        //     if ((posx > meteoriti[n].x0) && (posx < meteoriti[n].x1)) {                                                     
-        //         if ((posy > meteoriti[n].y0) && (posy < meteoriti[n].y1)) {         
-        //             if (meteoriti[n].stato == 0)                                                                           
-        //                 meteoriti[n].stato ++;                                                     
+        //controllo se ho colpito un meteorite                           
+        for (var n = 0; n < nattivi; n ++) {                                         
+            if ((posx > meteoriti[n].x0) && (posx < meteoriti[n].x1)) {                                                     
+                if ((posy > meteoriti[n].y0) && (posy < meteoriti[n].y1)) {         
+                    if (meteoriti[n].stato == 0)                                                                           
+                        meteoriti[n].stato ++;                                                     
                         
-        //             //incrementa_punteggio();                                                     
-        //         }                                         
-        //     }                           
-        // }             
+                    //incrementa_punteggio();                                                     
+                }                                         
+            }                           
+        }             
     } 
 }  
